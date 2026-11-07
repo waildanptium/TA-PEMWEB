@@ -21,6 +21,7 @@
         <div><label>Harga Jual</label><input type="number" name="price" min="0" class="input" required value="{{ old('price', $product->price) }}"></div>
         <div><label>Stok</label><input type="number" name="stock" min="0" class="input" required value="{{ old('stock', $product->stock ?? 0) }}"></div>
         <div><label>Stok Minimum</label><input type="number" name="min_stock" min="0" class="input" required value="{{ old('min_stock', $product->min_stock ?? 5) }}"></div>
+        <div><label>Tanggal Kadaluwarsa</label><input type="date" name="expiry_date" class="input" value="{{ old('expiry_date', optional($product->expiry_date)->format('Y-m-d')) }}"></div>
         <div>
             <label>Foto Produk</label>
             <input type="file" name="image" accept="image/*" class="input">

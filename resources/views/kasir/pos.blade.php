@@ -1,6 +1,7 @@
 <x-toko-layout title="POS Kasir">
     <script>
         window.POS_PRODUCTS = @json($products);
+        window.POS_BUNDLES = @json($bundles);
         window.POS_URL = "{{ route('kasir.pos.store') }}";
         window.POS_CSRF = "{{ csrf_token() }}";
 
@@ -22,7 +23,24 @@
                 },
                 remove(i) { this.cart.splice(i, 1); },
                 get subtotal() { return this.cart.reduce((s, c) => s + c.price * c.qty, 0); },
-                get total() { return Math.max(this.subtotal - (+this.discount || 0), 0); },
+                get bundleDiscount() {
+                    const pool = {};
+                    this.cart.forEach(c => pool[c.id] = c.qty);
+                    let total = 0;
+                    for (const b of window.POS_BUNDLES) {
+                        let sets = Infinity, normal = 0;
+                        for (const it of b.items) {
+                            sets = Math.min(sets, Math.floor((pool[it.product_id] || 0) / it.qty));
+                            normal += it.price * it.qty;
+                        }
+                        if (sets > 0 && sets !== Infinity) {
+                            total += sets * Math.max(0, normal - b.price);
+                            b.items.forEach(it => pool[it.product_id] -= sets * it.qty);
+                        }
+                    }
+                    return total;
+                },
+                get total() { return Math.max(this.subtotal - this.bundleDiscount - (+this.discount || 0), 0); },
                 get change() { return (+this.paid || 0) - this.total; },
                 rp(n) { return 'Rp ' + Number(n).toLocaleString('id-ID'); },
                 async pay() {
@@ -78,6 +96,7 @@
             <hr class="my-2">
 
             <div class="flex justify-between"><span>Subtotal</span><span x-text="rp(subtotal)"></span></div>
+            <div class="flex justify-between text-green-700" x-show="bundleDiscount > 0"><span>Hemat paket</span><span x-text="'- ' + rp(bundleDiscount)"></span></div>
             <div class="my-2"><label class="text-sm">Diskon (Rp, maks. {{ $maxDiscount }}%)</label>
                 <input type="number" min="0" x-model.number="discount" class="input"></div>
             <div class="flex justify-between font-bold text-lg"><span>Total</span><span x-text="rp(total)"></span></div>

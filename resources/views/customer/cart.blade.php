@@ -9,7 +9,7 @@
             @foreach($items as $item)
                 <tr>
                     <td>{{ $item->product->name }}</td>
-                    <td>Rp {{ number_format($item->product->price,0,',','.') }}</td>
+                    <td>Rp {{ number_format($item->product->final_price,0,',','.') }}</td>
                     <td>
                         <form method="POST" action="{{ route('cart.update', $item) }}" class="flex gap-1">
                             @csrf @method('PATCH')
@@ -17,7 +17,7 @@
                             <button class="btn btn-gray">Ubah</button>
                         </form>
                     </td>
-                    <td>Rp {{ number_format($item->qty * $item->product->price,0,',','.') }}</td>
+                    <td>Rp {{ number_format($item->qty * $item->product->final_price,0,',','.') }}</td>
                     <td>
                         <form method="POST" action="{{ route('cart.destroy', $item) }}">@csrf @method('DELETE')
                             <button class="btn btn-red">Hapus</button></form>
@@ -25,9 +25,15 @@
                 </tr>
             @endforeach
         </table>
-        <div class="card flex items-center justify-between">
-            <div class="text-xl font-bold">Total: Rp {{ number_format($total,0,',','.') }}</div>
-            <a href="{{ route('checkout') }}" class="btn">Checkout</a>
+        <div class="card">
+            <div class="flex justify-between"><span>Subtotal</span><span>Rp {{ number_format($total,0,',','.') }}</span></div>
+            @if($bundleDiscount > 0)
+                <div class="flex justify-between text-green-700"><span>Hemat paket</span><span>- Rp {{ number_format($bundleDiscount,0,',','.') }}</span></div>
+            @endif
+            <div class="flex items-center justify-between mt-2">
+                <div class="text-xl font-bold">Total: Rp {{ number_format($total - $bundleDiscount,0,',','.') }}</div>
+                <a href="{{ route('checkout') }}" class="btn">Checkout</a>
+            </div>
         </div>
     @endif
 </x-toko-layout>

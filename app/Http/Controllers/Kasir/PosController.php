@@ -14,10 +14,15 @@ class PosController extends Controller
 
     public function index()
     {
-        $products = Product::where('is_active', true)->orderBy('name')
-            ->get(['id', 'code', 'name', 'price', 'stock']);
+        $products = Product::where('is_active', true)->orderBy('name')->get()
+            ->map(fn ($p) => ['id' => $p->id, 'code' => $p->code, 'name' => $p->name,
+                'price' => $p->final_price, 'stock' => $p->stock]);
 
-        return view('kasir.pos', ['products' => $products, 'maxDiscount' => self::MAX_DISCOUNT_PERCENT]);
+        return view('kasir.pos', [
+            'products'    => $products,
+            'bundles'     => (new BundlePricing)->forFrontend(),
+            'maxDiscount' => self::MAX_DISCOUNT_PERCENT,
+        ]);
     }
 
     public function store(Request $request)
@@ -41,15 +46,17 @@ class PosController extends Controller
                     if (!$p->is_active || $p->stock < $row['qty']) {
                         throw new \Exception("Stok {$p->name} tidak cukup.");
                     }
-                    $subtotal += $p->price * $row['qty'];
+                    $subtotal += $p->final_price * $row['qty'];
                     $lines[] = [$p, $row['qty']];
                 }
 
-                $discount = (int) ($data['discount'] ?? 0);
-                if ($discount > $subtotal * self::MAX_DISCOUNT_PERCENT / 100) {
+                $bundleDiscount = (new BundlePricing)->discount(collect($data['items'])->pluck('qty', 'id')->all());
+                $manual = (int) ($data['discount'] ?? 0);
+                if ($manual > ($subtotal - $bundleDiscount) * self::MAX_DISCOUNT_PERCENT / 100) {
                     throw new \Exception('Diskon maksimal ' . self::MAX_DISCOUNT_PERCENT . '% dari subtotal.');
                 }
 
+                $discount = $bundleDiscount + $manual;
                 $total = $subtotal - $discount;
                 if ($data['payment_method'] === 'tunai' && $data['paid'] < $total) {
                     throw new \Exception('Uang yang dibayarkan kurang.');
@@ -72,7 +79,8 @@ class PosController extends Controller
                     $p->decrement('stock', $qty);
                     $order->items()->create([
                         'product_id' => $p->id, 'qty' => $qty,
-                        'price' => $p->price, 'cost_price' => $p->cost_price,
+                        'price' => $p->final_price,
+                        'cost_price' => $p->cost_price,
                     ]);
                 }
 

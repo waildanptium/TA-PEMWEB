@@ -6,15 +6,37 @@ use App\Http\Controllers\Controller;
 use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Bundle;
+use App\Services\BundlePricing;
 
 class CartController extends Controller
 {
     public function index()
     {
-        $items = CartItem::with('product')->where('user_id', auth()->id())->get();
-        $total = $items->sum(fn ($i) => $i->qty * $i->product->price);
+        $total = $items->sum(fn ($i) => $i->qty * $i->product->final_price);
+        $bundleDiscount = (new BundlePricing)->discount($items->pluck('qty', 'product_id')->all());
 
-        return view('customer.cart', compact('items', 'total'));
+        return view('customer.cart', compact('items', 'total', 'bundleDiscount'));
+    }
+
+     public function storeBundle(Bundle $bundle)
+    {
+        abort_unless($bundle->is_active, 404);
+        $bundleItems = $bundle->items()->with('product')->get();
+
+        foreach ($bundleItems as $it) {
+            if (!$it->product || !$it->product->is_active || $it->product->stock < $it->qty) {
+                return back()->with('error', 'Paket tidak tersedia: stok kurang.');
+            }
+        }
+
+        foreach ($bundleItems as $it) {
+            $item = CartItem::firstOrNew(['user_id' => auth()->id(), 'product_id' => $it->product_id]);
+            $item->qty = min(($item->qty ?? 0) + $it->qty, $it->product->stock);
+            $item->save();
+        }
+
+        return back()->with('success', 'Paket masuk keranjang.');
     }
 
     public function store(Request $request)

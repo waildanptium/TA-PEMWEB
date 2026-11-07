@@ -19,10 +19,14 @@
             <h2 class="font-bold mb-2">Ringkasan</h2>
             @foreach($items as $i)
                 <div class="flex justify-between"><span>{{ $i->product->name }} x{{ $i->qty }}</span>
-                    <span>Rp {{ number_format($i->qty*$i->product->price,0,',','.') }}</span></div>
+                    <span>Rp {{ number_format($i->qty*$i->product->final_price,0,',','.') }}</span></div>
             @endforeach
             <hr class="my-2">
-            <div class="flex justify-between font-bold text-lg"><span>Total</span><span>Rp {{ number_format($total,0,',','.') }}</span></div>
+            
         </div>
     </div>
+    @if($bundleDiscount > 0)
+    <div class="flex justify-between text-green-700"><span>Hemat paket</span><span>- Rp {{ number_format($bundleDiscount,0,',','.') }}</span></div>
+    @endif
+    <div class="flex justify-between font-bold text-lg"><span>Total</span><span>Rp {{ number_format($total - $bundleDiscount,0,',','.') }}</span></div>
 </x-toko-layout>

@@ -12,4 +12,14 @@
         @forelse($lowStock as $p)<tr><td>{{ $p->name }}</td><td>{{ $p->stock }}</td></tr>
         @empty<tr><td colspan="2">Semua stok aman.</td></tr>@endforelse
     </table>
+
+    <h2 class="font-bold mt-6 mb-2">Mendekati Kadaluwarsa</h2>
+    <table class="tbl">
+        <tr><th>Produk</th><th>Kadaluwarsa</th><th>Stok</th></tr>
+        @forelse($expiring as $p)
+            <tr><td>{{ $p->name }}</td><td>{{ $p->expiry_date->format('d/m/Y') }}</td><td>{{ $p->stock }}</td></tr>
+        @empty
+            <tr><td colspan="3">Tidak ada.</td></tr>
+        @endforelse
+    </table>
 </x-toko-layout>

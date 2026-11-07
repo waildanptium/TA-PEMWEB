@@ -76,7 +76,9 @@ class ProductController extends Controller
             'stock'       => 'required|integer|min:0',
             'min_stock'   => 'required|integer|min:0',
             'image'       => 'nullable|image|max:2048',
+            'expiry_date' => 'nullable|date',
         ]);
+        
         $data['is_active'] = $request->boolean('is_active');
         unset($data['image']);
 

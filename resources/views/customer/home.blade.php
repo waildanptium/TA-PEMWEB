@@ -12,6 +12,27 @@
         @endforeach
     </div>
 
+    @if($bundles->isNotEmpty())
+        <h2 class="font-bold text-lg mb-2">Paket Hemat</h2>
+        <div class="grid md:grid-cols-3 gap-4 mb-6">
+            @foreach($bundles as $b)
+                <div class="card">
+                    <div class="font-semibold">{{ $b->name }}</div>
+                    <div class="text-xs text-gray-500">
+                        @foreach($b->items as $i){{ $i->product->name }} x{{ $i->qty }}@if(!$loop->last), @endif @endforeach
+                    </div>
+                    <div class="text-xs text-gray-500 line-through">Rp {{ number_format($b->normal_price,0,',','.') }}</div>
+                    <div class="text-green-700 font-bold">Rp {{ number_format($b->price,0,',','.') }}</div>
+                    @if(!auth()->check() || auth()->user()->role === 'pelanggan')
+                        <form method="POST" action="{{ route('cart.bundle', $b) }}">@csrf
+                            <button class="btn w-full mt-2">+ Paket ke Keranjang</button>
+                        </form>
+                    @endif
+                </div>
+            @endforeach
+        </div>
+    @endif
+    
     <h2 class="font-bold text-lg mb-2">Produk Terbaru</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         @foreach($latest as $p)<x-product-card :product="$p" />@endforeach

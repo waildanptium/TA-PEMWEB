@@ -38,6 +38,8 @@ Route::middleware(['auth', 'role:pelanggan'])->group(function () {
 
     Route::get('/pesanan', [Customer\OrderController::class, 'index'])->name('orders');
     Route::get('/pesanan/{order}', [Customer\OrderController::class, 'show'])->name('orders.show');
+
+    Route::post('/keranjang/paket/{bundle}', [Customer\CartController::class, 'storeBundle'])->name('cart.bundle');
 });
 
 // ===== KASIR (admin juga boleh) =====
@@ -56,6 +58,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('kategori', Admin\CategoryController::class)->only(['index', 'store', 'destroy']);
     Route::resource('pegawai', Admin\EmployeeController::class)->only(['index', 'store', 'update']);
     Route::resource('transaksi', Admin\TransactionController::class)->only(['index', 'show', 'update']);
+
+    Route::post('diskon/{produk}', [Admin\DiscountController::class, 'store'])->name('diskon.store');
+    Route::delete('diskon/{produk}', [Admin\DiscountController::class, 'destroy'])->name('diskon.destroy');
+    Route::resource('paket', Admin\BundleController::class)->only(['store', 'destroy']);
 });
 
 require __DIR__.'/auth.php';

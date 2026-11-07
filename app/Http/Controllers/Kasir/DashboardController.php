@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Kasir;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\StoreInsights;
 
 class DashboardController extends Controller
 {
@@ -16,6 +17,7 @@ class DashboardController extends Controller
             'count'    => (clone $orders)->count(),
             'total'    => (clone $orders)->sum('total'),
             'lowStock' => Product::whereColumn('stock', '<=', 'min_stock')->orderBy('stock')->take(10)->get(),
+            'expiring' => (new StoreInsights)->expiring(),
         ]);
     }
 }

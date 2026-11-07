@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\BundlePricing;
 
 class CheckoutController extends Controller
 {
@@ -17,9 +18,10 @@ class CheckoutController extends Controller
         if ($items->isEmpty()) {
             return redirect()->route('cart')->with('error', 'Keranjang masih kosong.');
         }
-        $total = $items->sum(fn ($i) => $i->qty * $i->product->price);
+        $total = $items->sum(fn ($i) => $i->qty * $i->product->final_price);
+        $bundleDiscount = (new BundlePricing)->discount($items->pluck('qty', 'product_id')->all());
 
-        return view('customer.checkout', compact('items', 'total'));
+        return view('customer.checkout', compact('items', 'total', 'bundleDiscount'));
     }
 
     public function process(Request $request)
@@ -44,17 +46,19 @@ class CheckoutController extends Controller
                     if (!$p || !$p->is_active || $p->stock < $item->qty) {
                         throw new \Exception('Stok ' . ($p->name ?? 'produk') . ' tidak mencukupi.');
                     }
-                    $subtotal += $p->price * $item->qty;
+                    $subtotal += $p->final_price * $item->qty;
                     $lines[] = [$p, $item->qty];
                 }
+
+                $discount = (new BundlePricing)->discount($items->pluck('qty', 'product_id')->all());
 
                 $order = Order::create([
                     'invoice_no'       => 'INV-' . now()->format('ymdHis') . rand(10, 99),
                     'user_id'          => auth()->id(),
                     'channel'          => 'online',
                     'subtotal'         => $subtotal,
-                    'discount'         => 0,
-                    'total'            => $subtotal,
+                    'discount'         => $discount,
+                    'total'            => $subtotal - $discount,
                     'payment_method'   => $data['payment_method'],
                     'payment_status'   => 'unpaid',
                     'status'           => 'pending',
@@ -65,7 +69,8 @@ class CheckoutController extends Controller
                     $p->decrement('stock', $qty);
                     $order->items()->create([
                         'product_id' => $p->id, 'qty' => $qty,
-                        'price' => $p->price, 'cost_price' => $p->cost_price,
+                        'price'      => $p->final_price,
+                        'cost_price' => $p->cost_price,
                     ]);
                 }
 
