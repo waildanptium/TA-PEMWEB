@@ -19,7 +19,7 @@ class CartController extends Controller
         return view('customer.cart', compact('items', 'total', 'bundleDiscount'));
     }
 
-     public function storeBundle(Bundle $bundle)
+    public function storeBundle(Bundle $bundle)
     {
         abort_unless($bundle->is_active, 404);
         $bundleItems = $bundle->items()->with('product')->get();

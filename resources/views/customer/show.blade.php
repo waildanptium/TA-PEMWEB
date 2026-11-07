@@ -10,7 +10,12 @@
         <div>
             <div class="text-sm text-gray-500">{{ $product->category->name }}</div>
             <h1 class="text-2xl font-bold">{{ $product->name }}</h1>
-            <div class="text-2xl text-green-700 font-bold my-2">Rp {{ number_format($product->price,0,',','.') }}</div>
+            @if($product->discount_percent > 0)
+                <div class="text-sm text-gray-500 line-through">Rp {{ number_format($product->price,0,',','.') }}</div>
+            @endif
+            <div class="text-2xl text-green-700 font-bold my-2">Rp {{ number_format($product->final_price,0,',','.') }}
+                @if($product->discount_percent > 0)<span class="badge">-{{ $product->discount_percent }}%</span>@endif
+            </div>
             <p class="mb-2">{{ $product->description }}</p>
             <p class="text-sm text-gray-500 mb-4">Stok: {{ $product->stock }}</p>
 
