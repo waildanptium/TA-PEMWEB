@@ -3,16 +3,17 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bundle;
 use App\Models\CartItem;
 use App\Models\Product;
-use Illuminate\Http\Request;
-use App\Models\Bundle;
 use App\Services\BundlePricing;
+use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
     public function index()
     {
+        $items = CartItem::with('product')->where('user_id', auth()->id())->get();
         $total = $items->sum(fn ($i) => $i->qty * $i->product->final_price);
         $bundleDiscount = (new BundlePricing)->discount($items->pluck('qty', 'product_id')->all());
 
