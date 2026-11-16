@@ -9,7 +9,7 @@
                 <td>Rp {{ number_format($o->total,0,',','.') }}</td>
                 <td>{{ $o->payment_status == 'paid' ? 'Lunas' : 'Belum dibayar' }}</td>
                 <td><span class="badge">{{ $o->status }}</span></td>
-                <td><a href="{{ route('orders.show', $o) }}" class="btn btn-gray">Detail</a></td>
+                <td><a href="{{ route('orders.show', $o) }}" class="btn btn-white">Detail</a></td>
             </tr>
         @empty
             <tr><td colspan="6">Belum ada pesanan.</td></tr>

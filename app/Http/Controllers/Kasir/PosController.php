@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Kasir;
 
 use App\Http\Controllers\Controller;
+use App\Services\BundlePricing;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;

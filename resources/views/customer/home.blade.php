@@ -7,18 +7,18 @@
                 <h1 class="text-3xl sm:text-4xl font-extrabold text-[#382112] leading-tight">
                     Kebutuhan Sembako Harian Lebih Mudah!
                 </h1>
-                <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
+                <p class="text-sm sm:text-base text-orange-400 leading-relaxed">
                     Belanja kebutuhan sehari-hari dengan harga terbaik. Cepat, segar, dan praktis langsung ke rumahmu.
                 </p>
                 <div class="pt-2">
-                    <a href="{{ route('catalog') }}" class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-sm px-6 py-3 rounded-xl shadow-sm transition">
+                    <a href="{{ route('catalog') }}" class="inline-flex items-center gap-2 bg-orange-400 hover:bg-orange-600 text-white font-semibold text-sm px-6 py-3 rounded-xl shadow-sm transition">
                         Belanja Sekarang
                         <span>&rarr;</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Kotak Ilustrasi Kanan (Simpan gambar keranjang dari Figma di public/images/hero-sembako.png) -->
+            <!-- Kotak Ilustrasi Kanan -->
         <div class="w-full md:w-[440px] h-64 rounded-2xl overflow-hidden shadow-sm border border-orange-100 shrink-0">
         <img src="{{ asset('images/hero-sembako.jpeg') }}" 
          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
@@ -37,7 +37,7 @@
                 <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-500 flex items-center justify-center font-bold shrink-0">✓</div>
                 <div>
                     <h4 class="font-bold text-xs sm:text-sm text-gray-800">Produk Lengkap</h4>
-                    <p class="text-[11px] text-gray-400">Semua kebutuhan harian</p>
+                    <p class="text-[11px] text-gray-400">Semua kebutuhan tersedia</p>
                 </div>
             </div>
             <div class="bg-white p-4 rounded-2xl border border-orange-100 flex items-center gap-3 shadow-xs">
@@ -51,7 +51,7 @@
                 <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-500 flex items-center justify-center font-bold shrink-0">⚡</div>
                 <div>
                     <h4 class="font-bold text-xs sm:text-sm text-gray-800">Pengiriman Cepat</h4>
-                    <p class="text-[11px] text-gray-400">Langsung ke depan rumah</p>
+                    <p class="text-[11px] text-gray-400">Sampai tepat waktu</p>
                 </div>
             </div>
             <div class="bg-white p-4 rounded-2xl border border-orange-100 flex items-center gap-3 shadow-xs">
@@ -111,7 +111,7 @@
         </section>
 
         <!-- 5. PAKET HEMAT SETIAP HARI -->
-        <section id="paket-hemat" class="bg-gradient-to-r from-[#FDEBD0] to-[#FAD7A0]/70 rounded-3xl p-6 sm:p-8 border border-orange-100 space-y-6">
+        <section id="paket-hemat" class="bg-gradient-to-r from-[#FDE2B8] via-[#FCECD2] to-[#FFFDF9]/70 rounded-3xl p-6 sm:p-8 border border-orange-100 space-y-6">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div class="space-y-1.5 max-w-lg">
                     <h3 class="text-xl sm:text-2xl font-extrabold text-[#382112]">

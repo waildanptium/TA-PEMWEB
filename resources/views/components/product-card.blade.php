@@ -1,15 +1,15 @@
 @props(['product'])
-<div class="card flex flex-col">
+<div class="card flex flex-col justify-between border border-orange-100 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:border-orange-300 active:scale-[0.98] group">
     <a href="{{ route('catalog.show', $product) }}">
         @if($product->image)
-            <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}" class="w-full h-40 object-cover rounded mb-2">
+            <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}" class="w-full h-40 object-cover rounded mb-2" transition-transform duration-300 group-hover:scale-105>
         @else
             <div class="w-full h-40 bg-gray-200 rounded mb-2 flex items-center justify-center text-gray-500">Tanpa Foto</div>
         @endif
     </a>
     <div class="text-xs text-gray-500">{{ $product->category->name ?? '-' }}</div>
     <a href="{{ route('catalog.show', $product) }}" class="font-semibold">{{ $product->name }}</a>
-    <div class="text-green-700 font-bold mb-2">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+    <div class="text-orange-500 font-bold mb-2">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
     <div class="text-xs text-gray-500 mb-2">Stok: {{ $product->stock }}</div>
 
     @if(!auth()->check() || auth()->user()->role === 'pelanggan')
