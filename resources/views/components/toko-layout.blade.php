@@ -30,12 +30,6 @@
         }
     </style>
 </head>
-<<<<<<< HEAD
-<body class="bg-[#FFFBF5] text-gray-800">
-<nav class="bg-white shadow">
-    <div class="max-w-6xl mx-auto px-6 py-8 flex flex-wrap items-center gap-4">
-        <a href="{{ route('home') }}" class="font-bold text-lg text-orange-400">Toko Makmur Jaya</a>
-=======
 <body class="min-h-screen bg-[#fffaf4] text-[#3b2415] antialiased">
 <nav class="sticky top-0 z-30 border-b border-[#f2e7db] bg-white/95 backdrop-blur">
     <div class="mx-auto flex max-w-7xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 sm:px-6 lg:px-8">
@@ -46,7 +40,6 @@
                 <span class="hidden text-[10px] font-medium tracking-wide text-[#9b8876] sm:block">TOKO KEBUTUHAN HARIAN</span>
             </span>
         </a>
->>>>>>> 1e9ba5ee7ee1179199205be0935c4bbf8eb58656
 
         @auth
             @if(auth()->user()->role === 'admin')
@@ -110,15 +103,9 @@
     </div>
 </nav>
 
-<<<<<<< HEAD
 <main class="max-w-6xl mx-auto px-6 py-6">
     @if(session('success'))<div class="mb-4 p-3 rounded bg-green-100 text-green-800">{{ session('success') }}</div>@endif
     @if(session('error'))<div class="mb-4 p-3 rounded bg-red-100 text-red-800">{{ session('error') }}</div>@endif
-=======
-<main class="mx-auto min-h-[65vh] max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-    @if(session('success'))<div class="mb-4 rounded-2xl border border-green-200 bg-green-50 p-3 text-sm text-green-800">{{ session('success') }}</div>@endif
-    @if(session('error'))<div class="mb-4 rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">{{ session('error') }}</div>@endif
->>>>>>> 1e9ba5ee7ee1179199205be0935c4bbf8eb58656
     @if($errors->any())
         <div class="mb-4 rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">
             @foreach($errors->all() as $e)<div>{{ $e }}</div>@endforeach

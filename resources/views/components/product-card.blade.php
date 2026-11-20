@@ -1,18 +1,4 @@
 @props(['product'])
-<<<<<<< HEAD
-<div class="card flex flex-col justify-between border border-orange-100 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:border-orange-300 active:scale-[0.98] group">
-    <a href="{{ route('catalog.show', $product) }}">
-        @if($product->image)
-            <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}" class="w-full h-40 object-cover rounded mb-2" transition-transform duration-300 group-hover:scale-105>
-        @else
-            <div class="w-full h-40 bg-gray-200 rounded mb-2 flex items-center justify-center text-gray-500">Tanpa Foto</div>
-        @endif
-    </a>
-    <div class="text-xs text-gray-500">{{ $product->category->name ?? '-' }}</div>
-    <a href="{{ route('catalog.show', $product) }}" class="font-semibold">{{ $product->name }}</a>
-    <div class="text-orange-500 font-bold mb-2">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
-    <div class="text-xs text-gray-500 mb-2">Stok: {{ $product->stock }}</div>
-=======
 <article class="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#f0e2d3] bg-white shadow-[0_6px_20px_rgba(69,45,21,.05)] transition hover:-translate-y-1 hover:border-[#edb477] hover:shadow-[0_14px_28px_rgba(69,45,21,.12)]">
     <a href="{{ route('catalog.show', $product) }}" class="relative block overflow-hidden bg-[#fff5e8]">
         <div class="flex h-36 items-center justify-center p-5 sm:h-44">
@@ -26,7 +12,6 @@
             <span class="absolute left-3 top-3 rounded-full bg-[#df6b08] px-2.5 py-1 text-[10px] font-bold text-white">Diskon {{ $product->discount_percent }}%</span>
         @endif
     </a>
->>>>>>> 1e9ba5ee7ee1179199205be0935c4bbf8eb58656
 
     <div class="flex flex-1 flex-col p-3.5 sm:p-4">
         <span class="text-[10px] font-bold uppercase tracking-[.12em] text-[#a48c76]">{{ $product->category->name ?? 'Produk' }}</span>
