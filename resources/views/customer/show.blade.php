@@ -2,7 +2,7 @@
     <div class="card grid md:grid-cols-2 gap-6">
         <div>
             @if($product->image)
-                <img src="{{ asset('storage/'.$product->image) }}" class="w-full rounded">
+                <img src="{{ $product->image_url }}" class="w-full rounded">
             @else
                 <div class="w-full h-64 bg-gray-200 rounded flex items-center justify-center text-gray-500">Tanpa Foto</div>
             @endif

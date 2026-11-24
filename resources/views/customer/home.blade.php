@@ -112,7 +112,7 @@
                                     @endif
                                     <div class="flex h-[4.5rem] w-[4.5rem] items-center justify-center overflow-hidden rounded-2xl bg-[#f9ead8] p-2">
                                         @if($item->product->image)
-                                            <img src="{{ asset('storage/' . $item->product->image) }}" alt="" class="h-full w-full object-contain">
+                                            <img src="{{ $item->product->image_url }}" alt="" class="h-full w-full object-contain">
                                         @else
                                             <img src="{{ asset('images/' . $item->product->category->slug . '.png') }}" alt="" class="h-full w-full object-contain">
                                         @endif

@@ -29,7 +29,7 @@ class ProductController extends Controller
     {
         $data = $this->validated($request);
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products', 'public');
+            $data['image'] = $request->file('image')->store('products', 's3');
         }
         Product::create($data);
 
@@ -45,8 +45,8 @@ class ProductController extends Controller
     {
         $data = $this->validated($request, $produk->id);
         if ($request->hasFile('image')) {
-            if ($produk->image) Storage::disk('public')->delete($produk->image);
-            $data['image'] = $request->file('image')->store('products', 'public');
+            if ($produk->image) Storage::disk('s3')->delete($produk->image);
+            $data['image'] = $request->file('image')->store('products', 's3');
         }
         $produk->update($data);
 
@@ -58,7 +58,7 @@ class ProductController extends Controller
         if (OrderItem::where('product_id', $produk->id)->exists()) {
             return back()->with('error', 'Produk sudah pernah terjual. Nonaktifkan saja, jangan dihapus.');
         }
-        if ($produk->image) Storage::disk('public')->delete($produk->image);
+        if ($produk->image) Storage::disk('s3')->delete($produk->image);
         $produk->delete();
 
         return back()->with('success', 'Produk dihapus.');
@@ -75,10 +75,10 @@ class ProductController extends Controller
             'price'       => 'required|integer|min:0',
             'stock'       => 'required|integer|min:0',
             'min_stock'   => 'required|integer|min:0',
-            'image'       => 'nullable|image|max:2048',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'expiry_date' => 'nullable|date',
         ]);
-        
+
         $data['is_active'] = $request->boolean('is_active');
         unset($data['image']);
 

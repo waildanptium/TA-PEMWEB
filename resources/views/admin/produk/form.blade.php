@@ -25,7 +25,7 @@
         <div>
             <label>Foto Produk</label>
             <input type="file" name="image" accept="image/*" class="input">
-            @if($product->image)<img src="{{ asset('storage/'.$product->image) }}" class="h-20 mt-2 rounded">@endif
+            @if($product->image)<img src="{{ $product->image_url }}" class="h-20 mt-2 rounded">@endif
         </div>
         <div class="flex items-center gap-2">
             <input type="checkbox" name="is_active" value="1" id="is_active" @checked(old('is_active', $product->exists ? $product->is_active : true))>

@@ -3,7 +3,7 @@
     <a href="{{ route('catalog.show', $product) }}" class="relative block overflow-hidden bg-[#fff5e8]">
         <div class="flex h-36 items-center justify-center p-5 sm:h-44">
             @if($product->image)
-                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="h-full w-full object-contain transition duration-300 group-hover:scale-105">
+                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="h-full w-full object-contain transition duration-300 group-hover:scale-105">
             @else
                 <img src="{{ asset('images/' . $product->category->slug . '.png') }}" alt="{{ $product->category->name }}" class="h-full w-full object-contain transition duration-300 group-hover:scale-105">
             @endif
